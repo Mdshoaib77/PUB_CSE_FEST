@@ -1,0 +1,33 @@
+# syntax=docker/dockerfile:1
+# Build context: the repository root (festhub/).  docker compose does this for you.
+
+# ---- build: full dependency tree + sources (also used by the one-off `seed` service) ----
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY packages/shared/package.json packages/shared/
+COPY apps/server/package.json apps/server/
+COPY apps/web/package.json apps/web/
+RUN npm ci --no-audit --no-fund --workspace @festhub/server --workspace @festhub/shared
+COPY tsconfig.base.json ./
+COPY packages/shared packages/shared
+COPY apps/server apps/server
+RUN npm run build -w @festhub/server
+
+# ---- runtime: production deps + the single bundled file ----
+FROM node:20-alpine AS runtime
+ENV NODE_ENV=production PORT=5000 UPLOAD_DIR=/data/uploads
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY packages/shared/package.json packages/shared/
+COPY apps/server/package.json apps/server/
+COPY apps/web/package.json apps/web/
+RUN npm ci --omit=dev --no-audit --no-fund --workspace @festhub/server --workspace @festhub/shared \
+ && mkdir -p /data/uploads && chown -R node:node /data
+COPY --from=build /app/apps/server/dist apps/server/dist
+USER node
+EXPOSE 5000
+VOLUME ["/data/uploads"]
+HEALTHCHECK --interval=15s --timeout=3s --start-period=20s --retries=5 CMD wget -qO- http://127.0.0.1:5000/api/v1/health || exit 1
+WORKDIR /app/apps/server
+CMD ["node", "dist/index.js"]

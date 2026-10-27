@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#060b21" />
+    <meta name="description" content="PUB FestHub — events, contests and volunteers for the PUB CSE Fest 2026, Pundra University of Science &amp; Technology." />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:title" content="PUB FestHub — PUB CSE Fest 2026" />
+    <meta property="og:image" content="/logo-512.png" />
+    <style>
+      #boot{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:#060b21;transition:opacity .35s ease}
+      #boot.out{opacity:0;pointer-events:none}
+      #boot .w{display:flex;flex-direction:column;align-items:center}
+      #boot .r{position:relative;display:grid;place-items:center;width:191px;height:191px}
+      #boot .g{position:absolute;inset:8%;border-radius:50%;background:rgba(59,100,224,.4);filter:blur(36px);animation:bg 2.4s ease-in-out infinite}
+      #boot .s{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 55%,#35c4ff 100%);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));animation:bs 1.6s linear infinite}
+      #boot img{position:relative;width:132px;height:auto;animation:bb 2.4s ease-in-out infinite;filter:drop-shadow(0 6px 20px rgba(14,165,238,.5))}
+      #boot .b{position:relative;margin-top:20px;height:4px;width:160px;border-radius:4px;background:rgba(59,100,224,.25);overflow:hidden}
+      #boot .b i{position:absolute;top:0;bottom:0;left:0;width:40%;border-radius:4px;background:linear-gradient(90deg,#3b64e0,#35c4ff);animation:bl 1.5s cubic-bezier(.4,0,.2,1) infinite}
+      @keyframes bs{to{transform:rotate(360deg)}}
+      @keyframes bb{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+      @keyframes bg{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:.9;transform:scale(1.08)}}
+      @keyframes bl{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
+      @media (prefers-reduced-motion:reduce){#boot *{animation-duration:.01ms!important}}
+    </style>
+    <title>PUB FestHub — PUB CSE Fest 2026</title>
+    <script>
+      // Apply the saved theme before first paint (no flash). Keep in sync with src/lib/theme.ts.
+      try {
+        var t = localStorage.getItem('festhub-theme');
+        if (t === 'dark' || (t !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="boot" aria-hidden="true"><div class="w"><div class="r"><span class="g"></span><span class="s"></span><img src="/logo-192.png" width="132" height="109" alt="" /></div><div class="b"><i></i></div></div></div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

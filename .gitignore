@@ -1,0 +1,11 @@
+node_modules
+dist
+.env
+.env.*
+!.env.example
+coverage
+*.log
+
+# user-uploaded event images (dev)
+uploads/
+apps/server/uploads/
